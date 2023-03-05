@@ -9,28 +9,52 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="container" id="container"></div>
+    <!-- <button class="add-btn" onclick="openForm()">NEW BOOK</button> -->
 
-    <button class="add-btn" onclick="openForm()">NEW BOOK</button>
+    <div class="form-popup form" id="myForm">
+      <form class="main-form" action="#" method="get">
+        <h2>MY LIBRARY</h2>
 
-    <div class="form-popup" id="myForm">
-        <form action="#" method="get">
-            <h2>Add New Book</h2>
+        <div class="input-container">
+          <label for="title">Book Title</label>
+          <input
+            type="text"
+            name="title"
+          placeholder=" "
+            id="title"
+            required
+          />
+        </div>
 
-            <label for="title">Book Title</label>
-            <input type="text" name="title" placeholder="Title" id="title" required>
+        <div class="input-container">
+          <label for="author">Author</label>
+          <input
+            type="text"
+            name="author"
+     placeholder=" "
+            id="author"
+            required
+          />
+        </div>
 
-            <label for="author">Author</label>
-            <input type="text" name="author" placeholder="Author" id="author" required>
+        <div class="input-container">
+          <label for="pages">Pages</label>
+          <input
+            type="number"
+            name="pages"
+    placeholder=" "
+            id="pages"
+            required
+          />
+          <span id="error"></span>
+        </div>
 
-            <label for="pages">Pages</label>
-            <input type="number" name="pages" placeholder="Pages" id="pages" required>
-
-            <button type="submit" class="btn" id="submit-btn">Submit</button>
-            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-
-        </form>
+        <button type="submit" class="btn" id="submit-btn">+ ADD BOOK</button>
+        <!-- <button type="button" class="btn cancel" onclick="closeForm()">Close</button> -->
+      </form>
     </div>
+
+    <div class="container" id="container"></div>
 
   </body>
 </html>

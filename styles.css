@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,400&display=swap");
+
 *,
 *::before,
 *::after {
@@ -6,22 +8,199 @@
   padding: 0;
 }
 
+input,
+label,
+button{
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: none;
+  
+}
+
+/* Remove the stupid outer glow in Webkit */
+input:focus {
+  outline: 0;
+}
+
+/* All of our custom controls should be what we expect them to be */
+input,
+textarea {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+/* These elements are usually rendered a certain way by the browser */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="checkbox"],
+select {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+input[type="number"],
+input[type="text"] {
+  border-bottom: 1px solid #ffffff;
+  font-weight: 400;
+  font-size: 20px;
+  color: #fff;
+  width: 400px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff;
+}
+
+
+/* Button Controls
+-----------------------------------------------*/
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: 13px;
+  height: 13px;
+}
+
+/* Search Input
+-----------------------------------------------*/
+
+/* Make webkit render the search input like a normal text field */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box;
+}
+
+/* Turn off the recent search for webkit. It adds about 15px padding on the left */
+::-webkit-search-decoration {
+  display: none;
+}
+
+/* Buttons
+-----------------------------------------------*/
+
+button,
+input[type="button"],
+input[type="submit"] {
+  /* Fix IE7 display bug */
+  overflow: visible;
+  width: auto;
+  cursor: pointer;
+}
+
+/* IE8 and FF freak out if this rule is within another selector */
+::-webkit-file-upload-button {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* Textarea
+-----------------------------------------------*/
+
+textarea {
+  /* Move the label to the top */
+  vertical-align: top;
+
+  /* Turn off scroll bars in IE unless needed */
+  overflow: auto;
+}
+
+body {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 510px 1fr;
+  background: linear-gradient(
+    180deg,
+    rgba(149, 126, 127, 0.7) 0%,
+    rgba(58, 83, 94, 0.5) 100%
+  );
+  font-family: "Montserrat";
+}
+
 .card-body {
   display: flex;
   flex-direction: column;
-  height: 120px;
-  width: 250px;
-  border: 1px solid black;
+  width: 247px;
+  height: 242px;
+  display: flex;
+  flex-direction: column;
+  background: #f2e5d0;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  gap: 10px;
 }
 
 .container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(247px, 1fr));
   gap: 50px;
+  padding: 166px 128px;
 }
 
-.form-popup {
+/* .form-popup {
   display: none;
   border: 3px solid #f1f1f1;
-  z-index: 9;
+
+} */
+
+.form {
+  background: #1f2c32;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.main-form {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  padding: 0 31px;
+  position: fixed;
+  top: 20%;
+}
+
+.main-form h2 {
+  font-weight: 800;
+  font-size: 30px;
+}
+
+.del-btn {
+  border: 1px solid black;
+}
+
+.btn {
+  background: #f2e5d0;
+  border-radius: 5px;
+  width: 173px;
+  height: 64px;
+  font-size: 20px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  gap: 20px;
+}
+
+.input-container label {
+  font-weight: 400;
+  font-size: 20px;
+}
+
+input:not(:focus):not(:placeholder-shown):invalid {
+  border-bottom: 1px solid rgba(211, 59, 82, 0.9);
 }
