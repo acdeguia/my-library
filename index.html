@@ -1,14 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Library</title>
-    <link rel="stylesheet" href="./styles.css">
-    <script src="./app.js"></script>
-</head>
-<body>
-    
-</body>
+    <script src="./script.js" defer></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container" id="container"></div>
+
+    <button class="add-btn" onclick="openForm()">NEW BOOK</button>
+
+    <div class="form-popup" id="myForm">
+        <form action="#" method="get">
+            <h2>Add New Book</h2>
+
+            <label for="title">Book Title</label>
+            <input type="text" name="title" placeholder="Title" id="title" required>
+
+            <label for="author">Author</label>
+            <input type="text" name="author" placeholder="Author" id="author" required>
+
+            <label for="pages">Pages</label>
+            <input type="number" name="pages" placeholder="Pages" id="pages" required>
+
+            <button type="submit" class="btn" id="submit-btn">Submit</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+
+        </form>
+    </div>
+
+  </body>
 </html>
