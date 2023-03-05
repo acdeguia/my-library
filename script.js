@@ -8,25 +8,10 @@ submitBtn.addEventListener('click', (event) => {
   addBookToLibrary()
   clear()
   console.log(myLibrary)
+  display()
 })
 
 let myLibrary = [
-  {
-    title: "title1",
-    author: "author1",
-    pages: "pages1",
-  },
-  {
-    title: "title2",
-    author: "author2",
-    pages: "pages2",
-  },
-  {
-    title: "title3",
-    author: "author3",
-    pages: "pages3",
-  },
-
 ];
 
 function openForm() {
@@ -59,13 +44,15 @@ function clear() {
   pages.value = ''
 }
 
-myLibrary.forEach((book) => {
+function display() {
   const container = document.getElementById("container");
   const card = document.createElement("div");
   const title = document.createElement("h3");
   const author = document.createElement("p");
   const pages = document.createElement("p");
 
+  myLibrary.forEach((book) => {
+  
   card.classList = "card-body";
 
   title.innerHTML = book.title;
@@ -75,6 +62,7 @@ myLibrary.forEach((book) => {
   card.append(title);
   card.append(author);
   card.append(pages);
-
-  container.append(card);
 });
+container.append(card);
+}
+
