@@ -1,0 +1,79 @@
+<div id="results">
+</div>
+
+<div class="input-container">
+    <label for="title">Book Title</label>
+    <input
+      type="text"
+      name="title"
+    placeholder=" "
+      id="title"
+      required
+    />
+  </div>
+
+  <div class="input-container">
+    <label for="author">Author</label>
+    <input
+      type="text"
+      name="author"
+placeholder=" "
+      id="author"
+      required
+    />
+  </div>
+
+  <div class="input-container">
+    <label for="pages">Pages</label>
+    <input
+      type="number"
+      name="pages"
+placeholder=" "
+      id="pages"
+      required
+    />
+    <span id="error"></span>
+  </div>
+  <button onclick="submit()">Submit</button>
+
+<script>
+       var myLibrary=[];
+       var title=document.querySelector('#title');
+       var author=document.querySelector('#author');
+       var pages=document.querySelector('#pages');
+       var resultsDiv=document.querySelector('#results')
+       function submit(){
+             myLibrary.push({ title:title.value,author:author.value,pages:pages.value});
+             render();
+       }
+       function render(){
+        const container = document.getElementById("container");
+  const card = document.createElement("div");
+  const title = document.createElement("h3");
+  const author = document.createElement("p");
+  const pages = document.createElement("p");
+  const delBtn = document.createElement("button");
+  delBtn.classList = " del-btn";
+card.classList = "card-body";
+           resultsDiv.innerHTML="";
+
+           for(book of myLibrary)
+
+           title.innerHTML = book.title;
+           author.innerHTML = book.author;
+           pages.innerHTML  = book.pages;
+           card.append(title)
+           card.append(author)
+           card.append(pages)
+           card.append(pages)
+resultsDiv.innerHTML+= card.innerHTML;   
+            
+
+       }
+                
+       function deleteBook(title){
+           let index=myLibrary.findIndex( book => book.title == title);
+           myLibrary.splice(index,1);
+           render();
+       }
+</script>
