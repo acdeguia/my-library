@@ -1,49 +1,66 @@
-const submitBtn = document.getElementById("submit-btn");
-// const title = document.getElementById("title");
-// const author = document.getElementById("author");
-// const pages = document.getElementById("pages");
-const error = document.querySelector("#error");
+let title = document.querySelector("#title").value;
+let author = document.querySelector("#author").value;
+let pages = document.querySelector("#pages").value;
+let read = document.querySelector("#pages").checked;
 
-var title = document.querySelector("#title");
-var author = document.querySelector("#author");
-var pages = document.querySelector("#pages");
-var resultsDiv = document.querySelector("#results");
-
-submitBtn.addEventListener("click", (event) => {
-  event.preventDefault();
+const addBtn = document.querySelector("#submit-btn");
+addBtn.addEventListener("click", () => {
   addBookToLibrary();
   clear();
-  // closeForm()
-  render();
+  console.log(myLibrary);
+  display();
 });
 
+let myLibrary = [
+  { title: "Everyday", author: "David Levithan", pages: "295", read: true },
+];
 
-
-let myLibrary = [{ title: "Everyday", author: "David Levithan", pages: "394" }];
-
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
+function Book(title, author, pages, read) {
+  this.title = title;
+  this.author = author;
+  this.pages = pages;
+  this.read = read;
 }
 
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
+function display() {
+  const container = document.getElementById("container");
+  const card = document.createElement("div");
+  const cardContainer = document.createElement("div");
+  const titleE = document.createElement("h3");
+  const authorE = document.createElement("p");
+  const pagesE = document.createElement("p");
+  const delBtn = document.createElement("button");
+  const del = document.createElement("div");
+  delBtn.classList = " del-btn";
+  card.classList = "card-body";
+  container.innerHTML = "";
+  myLibrary.forEach((book) => {
+    if(title.value !== '' || author.value)
+    titleE.innerHTML = book.title;
+    authorE.innerHTML = book.author;
+    pagesE.innerHTML = book.pages;
+    delBtn.innerHTML = "Remove";
+    del.innerHTML = `<button onclick="deleteBook('${book.title}')">Delete</button><br>`;
 
-function Book() {
-  // the constructor...
+    card.append(title);
+    card.append(author);
+    card.append(pages);
+    card.append(del);
+    cardContainer.append(card);
+    container.innerHTML += cardContainer.innerHTML;
+  });
 }
 
 function addBookToLibrary() {
-  if (title.value === "" || author.value === "" || pages.value === "") {
-    error.innerHTML = "pls fill up form";
-  } else {
-    myLibrary.push({
-      title: title.value,
-      author: author.value,
-      pages: pages.value,
-    });
-    display();
-  }
+  // let title = document.querySelector("#title").value;
+  // let author = document.querySelector("#author").value;
+  // let pages = document.querySelector("#pages").value;
+  // let read = document.querySelector("#pages").checked;
+  // let container = document.querySelector("#container").value;
+  let newBook = new Book(title, author, pages, read);
+  myLibrary.push(newBook);
+  display();
+  console.log(myLibrary);
 }
 
 function clear() {
@@ -52,47 +69,11 @@ function clear() {
   pages.value = "";
 }
 
-function display() {
-  const container = document.getElementById("container");
-  const card = document.createElement("div");
-  const title = document.createElement("h3");
-  const author = document.createElement("p");
-  const pages = document.createElement("p");
-  const delBtn = document.createElement("button");
-  delBtn.classList = " del-btn";
-card.classList = "card-body";
-
-
-
-
-  myLibrary.forEach((book) => {
-    
-    title.innerHTML = book.title;
-    author.innerHTML = book.author;
-    pages.innerHTML = book.pages;
-    delBtn.innerHTML = "Remove";
-
-    card.append(title);
-    card.append(author);
-    card.append(pages);
-    card.append(delBtn);
- 
-  });   
-  container.append(card)
-  delBtn.setAttribute('onclick','deleteBook(book.title)')
-}
-
 display();
 
-// function render(){
-//   resultsDiv.innerHTML="";
-//   for(object of myLibrary)
-//    resultsDiv.innerHTML+= `Title:${object.title}  Author:${object.author} pages:${object.pages} <button onclick="deleteBook('${object.title}')">Delete</button><br>`;            
-
-// }
-
-function deleteBook(title){
-  let index=myLibrary.findIndex( book => book.title == title);
-  myLibrary.splice(index,1);
+function deleteBook(title) {
+  let index = myLibrary.findIndex((book) => book.title == title);
+  myLibrary.splice(index, 1);
   display();
+  console.log(myLibrary);
 }
