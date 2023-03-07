@@ -6,8 +6,8 @@ let error = document.querySelector('#error')
 
 const addBtn = document.querySelector("#submit-btn");
 
-addBtn.addEventListener("click", (event) => {
-  event.preventDefault();
+addBtn.addEventListener("click", () => {
+ 
   addBookToLibrary();
   clear();
   console.log(myLibrary);
@@ -37,6 +37,7 @@ function display() {
   delBtn.classList = " del-btn";
   card.classList = "card-body";
   container.innerHTML = "";
+  
   myLibrary.forEach((book) => {
 
     titleE.innerHTML = book.title;
@@ -55,17 +56,9 @@ function display() {
 }
 
 function addBookToLibrary() {
-
   let newBook = new Book(title, author, pages, read);
- if(title === '' || author === '' || pages === '') {
-  error.innerHTML = "pls fill up form"
- }else {
-   myLibrary.push(newBook);
+  myLibrary.push(newBook);
   display();
- }
- 
- 
-
    console.log(myLibrary);
 }
 
