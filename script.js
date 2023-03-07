@@ -2,9 +2,12 @@ let title = document.querySelector("#title").value;
 let author = document.querySelector("#author").value;
 let pages = document.querySelector("#pages").value;
 let read = document.querySelector("#pages").checked;
+let error = document.querySelector('#error')
 
 const addBtn = document.querySelector("#submit-btn");
-addBtn.addEventListener("click", () => {
+
+addBtn.addEventListener("click", (event) => {
+  event.preventDefault();
   addBookToLibrary();
   clear();
   console.log(myLibrary);
@@ -35,16 +38,16 @@ function display() {
   card.classList = "card-body";
   container.innerHTML = "";
   myLibrary.forEach((book) => {
-    if(title.value !== '' || author.value)
+
     titleE.innerHTML = book.title;
     authorE.innerHTML = book.author;
     pagesE.innerHTML = book.pages;
     delBtn.innerHTML = "Remove";
-    del.innerHTML = `<button onclick="deleteBook('${book.title}')">Delete</button><br>`;
+    del.innerHTML = `<button class="remove-btn" onclick="deleteBook('${book.title}')">Delete</button><br>`;
 
-    card.append(title);
-    card.append(author);
-    card.append(pages);
+    card.append(titleE);
+    card.append(authorE);
+    card.append(pagesE);
     card.append(del);
     cardContainer.append(card);
     container.innerHTML += cardContainer.innerHTML;
@@ -52,15 +55,18 @@ function display() {
 }
 
 function addBookToLibrary() {
-  // let title = document.querySelector("#title").value;
-  // let author = document.querySelector("#author").value;
-  // let pages = document.querySelector("#pages").value;
-  // let read = document.querySelector("#pages").checked;
-  // let container = document.querySelector("#container").value;
+
   let newBook = new Book(title, author, pages, read);
-  myLibrary.push(newBook);
+ if(title === '' || author === '' || pages === '') {
+  error.innerHTML = "pls fill up form"
+ }else {
+   myLibrary.push(newBook);
   display();
-  console.log(myLibrary);
+ }
+ 
+ 
+
+   console.log(myLibrary);
 }
 
 function clear() {

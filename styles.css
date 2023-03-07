@@ -170,3 +170,11 @@ body {
 input:not(:focus):not(:placeholder-shown):invalid {
   border-bottom: 1px solid rgba(211, 59, 82, 0.9);
 }
+
+.remove-btn {
+border: solid 1px black;
+}
+
+#error {
+  color: #D33B52;
+}
