@@ -1,28 +1,21 @@
-let title = document.querySelector("#title").value;
-let author = document.querySelector("#author").value;
-let pages = document.querySelector("#pages").value;
-let read = document.querySelector("#pages").checked;
-let error = document.querySelector('#error')
-
 const addBtn = document.querySelector("#submit-btn");
 
 addBtn.addEventListener("click", () => {
- 
   addBookToLibrary();
-  clear();
+ clear();
   console.log(myLibrary);
   display();
 });
 
 let myLibrary = [
-  { title: "Everyday", author: "David Levithan", pages: "295", read: true },
+  {title: "Everyday", author: "David Levithan", pages: "295", read: true},
 ];
 
 function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
   this.pages = pages;
-  this.read = read;
+  // this.read = read;
 }
 
 function display() {
@@ -51,11 +44,20 @@ function display() {
     card.append(pagesE);
     card.append(del);
     cardContainer.append(card);
+    
     container.innerHTML += cardContainer.innerHTML;
   });
+  
 }
 
 function addBookToLibrary() {
+
+  let title = document.querySelector("#title").value;
+let author = document.querySelector("#author").value;
+let pages = document.querySelector("#pages").value;
+let read = document.querySelector("#read").checked;
+let error = document.querySelector('#error')
+
   let newBook = new Book(title, author, pages, read);
   myLibrary.push(newBook);
   display();
