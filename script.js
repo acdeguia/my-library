@@ -1,6 +1,7 @@
 const addBtn = document.querySelector("#submit-btn");
 
 addBtn.addEventListener("click", () => {
+  event.preventDefault()
   addBookToLibrary();
  clear();
   console.log(myLibrary);
@@ -8,14 +9,14 @@ addBtn.addEventListener("click", () => {
 });
 
 let myLibrary = [
-  {title: "Everyday", author: "David Levithan", pages: "295", read: 'read'},
+  {title: "Everyday", author: "David Levithan", pages: "295", read: true},
 ];
 
 function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
   this.pages = pages;
-  // this.read = read;
+  this.read = read;
 }
 
 function display() {
@@ -27,7 +28,7 @@ function display() {
   const pagesE = document.createElement("p");
   const delBtn = document.createElement("button");
   const del = document.createElement("div");
-  const readE = document.createElement("checkbox");
+  const readE = document.createElement("p");
   delBtn.classList = " del-btn";
   card.classList = "card-body";
   container.innerHTML = "";
@@ -37,17 +38,23 @@ function display() {
     titleE.innerHTML = book.title;
     authorE.innerHTML = book.author;
     pagesE.innerHTML = book.pages;
-    readE.value = book.read;
+   
     delBtn.innerHTML = "Remove";
     del.innerHTML = `<button class="remove-btn" onclick="deleteBook('${book.title}')">Delete</button><br>`;
+
+    if (book.read === true) {
+      readE.innerHTML = "READ";
+    }else {
+      readE.innerHTML = "not yet read";
+    }
 
     card.append(titleE);
     card.append(authorE);
     card.append(pagesE);
-    card.append(del);
+    
     card.append(readE)
     cardContainer.append(card);
-    
+    card.append(del);
     container.innerHTML += cardContainer.innerHTML;
   });
   
@@ -58,7 +65,8 @@ function addBookToLibrary() {
   let title = document.querySelector("#title").value;
 let author = document.querySelector("#author").value;
 let pages = document.querySelector("#pages").value;
-let read = document.querySelector("#read").value;
+let read = document.getElementById("read").checked;
+
 let error = document.querySelector('#error')
 
   let newBook = new Book(title, author, pages, read);
