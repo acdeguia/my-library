@@ -8,7 +8,7 @@ addBtn.addEventListener("click", () => {
 });
 
 let myLibrary = [
-  {title: "Everyday", author: "David Levithan", pages: "295", read: true},
+  {title: "Everyday", author: "David Levithan", pages: "295", read: 'read'},
 ];
 
 function Book(title, author, pages, read) {
@@ -27,6 +27,7 @@ function display() {
   const pagesE = document.createElement("p");
   const delBtn = document.createElement("button");
   const del = document.createElement("div");
+  const readE = document.createElement("checkbox");
   delBtn.classList = " del-btn";
   card.classList = "card-body";
   container.innerHTML = "";
@@ -36,6 +37,7 @@ function display() {
     titleE.innerHTML = book.title;
     authorE.innerHTML = book.author;
     pagesE.innerHTML = book.pages;
+    readE.value = book.read;
     delBtn.innerHTML = "Remove";
     del.innerHTML = `<button class="remove-btn" onclick="deleteBook('${book.title}')">Delete</button><br>`;
 
@@ -43,6 +45,7 @@ function display() {
     card.append(authorE);
     card.append(pagesE);
     card.append(del);
+    card.append(readE)
     cardContainer.append(card);
     
     container.innerHTML += cardContainer.innerHTML;
@@ -55,13 +58,19 @@ function addBookToLibrary() {
   let title = document.querySelector("#title").value;
 let author = document.querySelector("#author").value;
 let pages = document.querySelector("#pages").value;
-let read = document.querySelector("#read").checked;
+let read = document.querySelector("#read").value;
 let error = document.querySelector('#error')
 
   let newBook = new Book(title, author, pages, read);
-  myLibrary.push(newBook);
+
+  if(title === '' || author === '' || pages === ''){
+    error.innerHTML = 'pls fill up'
+  }else{
+     myLibrary.push(newBook);
   display();
    console.log(myLibrary);
+  }
+  
 }
 
 function clear() {
