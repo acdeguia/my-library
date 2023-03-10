@@ -20,6 +20,15 @@ function Book(title, author, pages, read) {
   this.read = read;
 }
 
+Book.prototype.toggleRead = function () {
+  this.read = !this.read;
+};
+
+function toggleRead(index) {
+  myLibrary[index].toggleRead();
+  render();
+}
+
 function display() {
   const container = document.getElementById("container");
   const card = document.createElement("div");
@@ -28,9 +37,7 @@ function display() {
   const authorE = document.createElement("p");
   const pagesE = document.createElement("p");
   const delBtn = document.createElement("button");
-  const del = document.createElement("div");
   const readE = document.createElement("p");
-
   delBtn.classList = " del-btn";
 
   card.classList = "card-body";
@@ -41,9 +48,8 @@ function display() {
     titleE.innerHTML = book.title;
     authorE.innerHTML = book.author;
     pagesE.innerHTML = `${book.pages} pages`;
-
     delBtn.innerHTML = "Remove";
-    del.innerHTML = `<p class=" del" onclick="deleteBook('${book.title}')">╳</p>`;
+    card.innerHTML = `<p class=" del" onclick="deleteBook('${book.title}')">╳</p>`;
 
     if (book.read === true) {
       readE.innerHTML = "READ";
@@ -56,7 +62,6 @@ function display() {
     card.append(pagesE);
     card.append(readE);
     cardContainer.append(card);
-    card.append(del);
     container.innerHTML += cardContainer.innerHTML;
   });
   bookCount.innerHTML = `Total book/s count: ${myLibrary.length}`;

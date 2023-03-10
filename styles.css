@@ -185,7 +185,7 @@ border: solid 1px black;
   font-style: italic;
 }
 
-/* .switch {
+.switch {
   position: relative;
   display: inline-block;
   width: 60px;
@@ -242,7 +242,7 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
-} */
+}
 
 .toggle {
   display: flex;
@@ -259,6 +259,7 @@ input:checked + .slider:before {
   position: absolute;
   right: 30px;
   top: 20px;
+  cursor: pointer;
 }
 
 .log {
