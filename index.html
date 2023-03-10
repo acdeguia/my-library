@@ -49,15 +49,15 @@
           <span id="error"></span>
         </div>
 
-        <div class="input-container">
-          <label for="read">READ</label>
+        <div class="toggle">
+          
           <input
             type="checkbox"
             name="read"
             id="read"
             required
           />
-          
+          <label for="read">I have already read the book</label>
           <span id="error"></span>
         </div>
 
@@ -66,7 +66,17 @@
       </form>
     </div>
 
-    <div class="container" id="container"></div>
+    <div class="container" id="container">
+
+      
+    </div>
+
+    <div class="log">
+      <h2>Library log</h2>
+      <p id="book-count">Total book/s count:</p>
+      <p id="read-book">Read:</p>
+      <p id="not-yet">Not yet read:</p>
+    </div>
 
   </body>
 </html>
