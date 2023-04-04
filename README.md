@@ -10,6 +10,6 @@
 ### Objective
 * Implement an array to store books as objects, including properties such as title, author, and reading status.
 * Use object constructor and store new book into an array
-* Develop a user interface that displays books in an organized and visually appealing manner, using either a table or card layout.
+* Develop a user interface that displays books in an organized and visually appealing manner, using a card layout.
 * Design a form for users to add new books to the application, with input fields for necessary book details.
 
