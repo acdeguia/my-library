@@ -51,7 +51,7 @@ function displayBook(book) {
   authorE.innerHTML = book.author;
   pagesE.innerHTML = `${book.pages} pages`;
   delBtn.innerHTML = "Remove";
-  card.innerHTML = `<p class="del" onclick="deleteBook('${book.title}')">╳</p>`;
+  card.innerHTML = `<p class="del" onclick="deleteBook('${book.title}')">×</p>`;
 
   if (book.read === true) {
     readE.innerHTML = "READ";
