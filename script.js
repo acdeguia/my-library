@@ -1,5 +1,11 @@
 const addBtn = document.querySelector("#submit-btn");
 const bookCount = document.getElementById("book-count");
+const container = document.getElementById("container");
+const titleInput = document.querySelector("#title");
+const authorInput = document.querySelector("#author");
+const pagesInput = document.querySelector("#pages");
+const readInput = document.getElementById("read");
+const error = document.querySelector("#error");
 
 let myLibrary = [
   { title: "Everyday", author: "David Levithan", pages: "295", read: true },
@@ -29,8 +35,7 @@ function toggleRead(index) {
   render();
 }
 
-function display() {
-  const container = document.getElementById("container");
+function displayBook(book) {
   const card = document.createElement("div");
   const cardContainer = document.createElement("div");
   const titleE = document.createElement("h3");
@@ -38,48 +43,47 @@ function display() {
   const pagesE = document.createElement("p");
   const delBtn = document.createElement("button");
   const readE = document.createElement("p");
-  delBtn.classList = " del-btn";
-
+  delBtn.classList = "del-btn";
   card.classList = "card-body";
   authorE.classList = "author";
-  container.innerHTML = "";
 
-  myLibrary.forEach((book) => {
-    titleE.innerHTML = book.title;
-    authorE.innerHTML = book.author;
-    pagesE.innerHTML = `${book.pages} pages`;
-    delBtn.innerHTML = "Remove";
-    card.innerHTML = `<p class=" del" onclick="deleteBook('${book.title}')">╳</p>`;
+  titleE.innerHTML = book.title;
+  authorE.innerHTML = book.author;
+  pagesE.innerHTML = `${book.pages} pages`;
+  delBtn.innerHTML = "Remove";
+  card.innerHTML = `<p class="del" onclick="deleteBook('${book.title}')">╳</p>`;
 
-    if (book.read === true) {
-      readE.innerHTML = "READ";
-    } else {
-      readE.innerHTML = "not yet read";
-    }
+  if (book.read === true) {
+    readE.innerHTML = "READ";
+  } else {
+    readE.innerHTML = "not yet read";
+  }
 
-    card.append(titleE);
-    card.append(authorE);
-    card.append(pagesE);
-    card.append(readE);
-    cardContainer.append(card);
-    container.innerHTML += cardContainer.innerHTML;
-  });
+  card.append(titleE);
+  card.append(authorE);
+  card.append(pagesE);
+  card.append(readE);
+  cardContainer.append(card);
+  container.appendChild(cardContainer);
+}
+
+function display() {
+  container.innerHTML = ""; // Clear the container
+
+  myLibrary.forEach(displayBook);
   bookCount.innerHTML = `Total book/s count: ${myLibrary.length}`;
 }
 
 function addBookToLibrary() {
-  let title = document.querySelector("#title").value;
-  let author = document.querySelector("#author").value;
-  let pages = document.querySelector("#pages").value;
-  let read = document.getElementById("read").checked;
-
-  let error = document.querySelector("#error");
-
-  let newBook = new Book(title, author, pages, read);
+  const title = titleInput.value;
+  const author = authorInput.value;
+  const pages = pagesInput.value;
+  const read = readInput.checked;
 
   if (title === "" || author === "" || pages === "") {
-    error.innerHTML = "pls fill up";
+    error.innerHTML = "Please fill up all fields.";
   } else {
+    const newBook = new Book(title, author, pages, read);
     myLibrary.push(newBook);
     display();
     console.log(myLibrary);
@@ -87,17 +91,17 @@ function addBookToLibrary() {
 }
 
 function clear() {
-  title.value = "";
-  author.value = "";
-  pages.value = "";
+  titleInput.value = "";
+  authorInput.value = "";
+  pagesInput.value = "";
 }
 
 display();
 
 function deleteBook(title) {
-  let result = confirm(`Want to delete ${title}?`);
+  const result = confirm(`Want to delete ${title}?`);
   if (result === true) {
-    let index = myLibrary.findIndex((book) => book.title == title);
+    const index = myLibrary.findIndex((book) => book.title === title);
     myLibrary.splice(index, 1);
     display();
     console.log(myLibrary);

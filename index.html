@@ -9,20 +9,13 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-
     <div class="form-popup form" id="myForm">
       <form class="main-form" action="#" method="get">
         <h2>MY LIBRARY</h2>
 
         <div class="input-container">
           <label for="title">Book Title</label>
-          <input
-            type="text"
-            name="title"
-          placeholder=" "
-            id="title"
-            required
-          />
+          <input type="text" name="title" placeholder=" " id="title" required />
         </div>
 
         <div class="input-container">
@@ -49,13 +42,7 @@
         </div>
 
         <div class="toggle">
-          
-          <input
-            type="checkbox"
-            name="read"
-            id="read"
-            required
-          />
+          <input type="checkbox" name="read" id="read" required />
           <label for="read">I have already read the book</label>
           <span id="error"></span>
         </div>
@@ -74,5 +61,17 @@
       <p id="not-yet">Not yet read:</p> -->
     </div>
 
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBFsXGGH8Zo4UliU_rWRN_LPaRibCC23yQ",
+        authDomain: "mylibrary-2127b.firebaseapp.com",
+        projectId: "mylibrary-2127b",
+        storageBucket: "mylibrary-2127b.appspot.com",
+        messagingSenderId: "883165944883",
+        appId: "1:883165944883:web:c686e6fc959a5fd781d746",
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
   </body>
 </html>
