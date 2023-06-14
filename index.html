@@ -7,13 +7,45 @@
     <title>My Library</title>
     <script src="./script.js" defer></script>
     <link rel="stylesheet" href="./styles.css" />
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+
+  <script>
+    // Initialize Firebase with your project's configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyBFsXGGH8Zo4UliU_rWRN_LPaRibCC23yQ",
+  authDomain: "mylibrary-2127b.firebaseapp.com",
+  projectId: "mylibrary-2127b",
+  storageBucket: "mylibrary-2127b.appspot.com",
+  messagingSenderId: "883165944883",
+  appId: "1:883165944883:web:c686e6fc959a5fd781d746"
+    };
+    firebase.initializeApp(firebaseConfig);
+  
+    // Create a GoogleAuthProvider instance
+    var provider = new firebase.auth.GoogleAuthProvider();
+  
+    // Function to handle Google sign-in
+    function handleGoogleSignIn() {
+      firebase.auth().signInWithPopup(provider)
+        .then(function(result) {
+          // Handle successful sign-in or any additional logic
+          console.log(result);
+        })
+        .catch(function(error) {
+          // Handle error
+          console.log(error);
+        });
+    }
+  </script>
   </head>
   <body>
 
     <div class="form-popup form" id="myForm">
+      
       <form class="main-form" action="#" method="get">
         <h2>MY LIBRARY</h2>
-
+        
         <div class="input-container">
           <label for="title">Book Title</label>
           <input
@@ -65,7 +97,7 @@
       </form>
     </div>
 
-    <div class="container" id="container"></div>
+    <div class="container" id="container"> </div>
 
     <div class="log">
       <h2>Library log</h2>
@@ -73,6 +105,7 @@
       <!-- <p id="read-book">Read:</p>
       <p id="not-yet">Not yet read:</p> -->
     </div>
+    <button class="google-btn" id="googleSignInButton">SIGN IN</button>
 
   </body>
 </html>

@@ -288,3 +288,21 @@ margin-bottom: 10px;
   font-size: 15px;
  
 }
+
+.google-btn {
+  position: absolute;
+  border: 1px solid #72765C;
+  border-radius: 15px;
+width: 120px;
+height: 64px;
+color: white;
+font-size: 20px;
+color: #191919;
+top: 20px;
+right: 20px;
+}
+
+.google-btn:hover {
+  background: #72765C;
+  color: #fff;
+}
