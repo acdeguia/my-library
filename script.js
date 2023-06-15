@@ -59,8 +59,13 @@ function addBookToLibrary() {
 function display() {
   container.innerHTML = ""; // Clear the container
 
+  const bookIds = new Set(); // Keep track of book IDs
+
   myLibrary.forEach((book) => {
-    displayBook(book);
+    if (!bookIds.has(book.id)) {
+      displayBook(book);
+      bookIds.add(book.id);
+    }
   });
 
   bookCount.innerHTML = `Total book/s count: ${myLibrary.length}`;
@@ -68,6 +73,7 @@ function display() {
 
 // Display a book card in the container
 function displayBook(book) {
+  
   const card = document.createElement("div");
   const cardContainer = document.createElement("div");
   const titleE = document.createElement("h3");
@@ -104,7 +110,6 @@ function deleteBook(bookId) {
   const result = confirm(`Want to delete book with ID ${bookId}?`);
   if (result === true) {
     // Delete the book document from the "books" collection in Firestore
-    display();
     db.collection("books")
       .doc(bookId)
       .delete()
@@ -120,6 +125,7 @@ function deleteBook(bookId) {
   }
 }
 
+
 // Clear the input fields
 function clear() {
   titleInput.value = "";
@@ -128,20 +134,27 @@ function clear() {
 }
 
 // Listen for changes in the "books" collection in Firestore
+// Listen for changes in the "books" collection in Firestore
+// Listen for changes in the "books" collection in Firestore
 db.collection("books").onSnapshot((snapshot) => {
-  snapshot.docChanges().forEach((change) => {
+  const changes = snapshot.docChanges();
+
+  changes.forEach((change) => {
     const bookData = change.doc.data();
     const bookId = change.doc.id;
 
     if (change.type === "added") {
-      const book = new Book(
-        bookData.title,
-        bookData.author,
-        bookData.pages,
-        bookData.read
-      );
-      book.id = bookId;
-      myLibrary.push(book);
+      const existingBook = myLibrary.find((book) => book.id === bookId);
+      if (!existingBook) {
+        const book = new Book(
+          bookData.title,
+          bookData.author,
+          bookData.pages,
+          bookData.read
+        );
+        book.id = bookId;
+        myLibrary.push(book);
+      }
     } else if (change.type === "modified") {
       const index = myLibrary.findIndex((book) => book.id === bookId);
       if (index !== -1) {
