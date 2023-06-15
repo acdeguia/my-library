@@ -5,56 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Library</title>
-    <script src="./script.js" defer></script>
     <link rel="stylesheet" href="./styles.css" />
     <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
 
-  <script>
-    // Initialize Firebase with your project's configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyBFsXGGH8Zo4UliU_rWRN_LPaRibCC23yQ",
-  authDomain: "mylibrary-2127b.firebaseapp.com",
-  projectId: "mylibrary-2127b",
-  storageBucket: "mylibrary-2127b.appspot.com",
-  messagingSenderId: "883165944883",
-  appId: "1:883165944883:web:c686e6fc959a5fd781d746"
-    };
-    firebase.initializeApp(firebaseConfig);
-  
-    // Create a GoogleAuthProvider instance
-    var provider = new firebase.auth.GoogleAuthProvider();
-  
-    // Function to handle Google sign-in
-    function handleGoogleSignIn() {
-      firebase.auth().signInWithPopup(provider)
-        .then(function(result) {
-          // Handle successful sign-in or any additional logic
-          console.log(result);
-        })
-        .catch(function(error) {
-          // Handle error
-          console.log(error);
-        });
-    }
-  </script>
+    <script src="firebase-config.js"></script>
   </head>
   <body>
-
     <div class="form-popup form" id="myForm">
-      
       <form class="main-form" action="#" method="get">
         <h2>MY LIBRARY</h2>
-        
+        <div id="username-display"></div>
         <div class="input-container">
           <label for="title">Book Title</label>
-          <input
-            type="text"
-            name="title"
-          placeholder=" "
-            id="title"
-            required
-          />
+          <input type="text" name="title" placeholder=" " id="title" required />
         </div>
 
         <div class="input-container">
@@ -77,35 +42,117 @@
             id="pages"
             required
           />
-          <span id="error"></span>
+          <span id="pages-error"></span>
         </div>
 
         <div class="toggle">
-          
-          <input
-            type="checkbox"
-            name="read"
-            id="read"
-            required
-          />
+          <input type="checkbox" name="read" id="read" />
           <label for="read">I have already read the book</label>
-          <span id="error"></span>
+          <span id="read-error"></span>
         </div>
 
         <button type="submit" class="btn" id="submit-btn">+ ADD BOOK</button>
-        <!-- <button type="button" class="btn cancel" onclick="closeForm()">Close</button> -->
       </form>
     </div>
 
-    <div class="container" id="container"> </div>
+    <div class="container" id="container"></div>
 
     <div class="log">
       <h2>Library log</h2>
       <p id="book-count">Total book/s count:</p>
-      <!-- <p id="read-book">Read:</p>
-      <p id="not-yet">Not yet read:</p> -->
     </div>
+
     <button class="google-btn" id="googleSignInButton">SIGN IN</button>
 
+    <script src="./script.js" async></script>
+    <script>
+      // Create a GoogleAuthProvider instance
+      var provider = new firebase.auth.GoogleAuthProvider();
+      var db = firebase.firestore();
+      var booksCollection = db.collection("books");
+
+      // Function to handle Google sign-in
+      function handleGoogleSignIn() {
+        firebase
+          .auth()
+          .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+          .then(function () {
+            return firebase.auth().signInWithPopup(provider);
+          })
+          .then(function (result) {
+            // Handle successful sign-in or any additional logic
+            console.log(result);
+            checkUserLoggedIn();
+          })
+          .catch(function (error) {
+            // Handle error
+            console.log(error);
+          });
+      }
+
+      function checkUserLoggedIn() {
+        firebase.auth().onAuthStateChanged(function (user) {
+          var signInButton = document.getElementById("googleSignInButton");
+
+          if (user) {
+            // User is signed in
+            console.log("User is logged in");
+            signInButton.textContent = "SIGN OUT";
+            signInButton.onclick = handleGoogleSignOut;
+
+            // Get the user's display name and show it
+            var displayName = user.displayName;
+            document.getElementById("username-display").textContent =
+              "Username: " + displayName;
+
+            // Store the user's sign-in state in local storage
+            localStorage.setItem("userSignedIn", "true");
+
+            // You can perform additional actions here for a logged-in user
+          } else {
+            // User is not signed in
+            console.log("User is not logged in");
+            signInButton.textContent = "SIGN IN";
+            signInButton.onclick = handleGoogleSignIn;
+
+            // Clear the username display
+            document.getElementById("username-display").textContent = "";
+
+            // Remove the user's sign-in state from local storage
+            localStorage.removeItem("userSignedIn");
+
+            // You can perform additional actions here for a non-logged-in user
+          }
+        });
+      }
+
+      // Check the user's sign-in state on page load
+      window.addEventListener("load", function () {
+        var userSignedIn = localStorage.getItem("userSignedIn");
+
+        if (userSignedIn) {
+          checkUserLoggedIn();
+        }
+      });
+
+      function handleGoogleSignOut() {
+        firebase
+          .auth()
+          .signOut()
+          .then(function () {
+            // Handle successful sign-out or any additional logic
+            console.log("User signed out");
+          })
+          .catch(function (error) {
+            // Handle error
+            console.log(error);
+          });
+
+        document.getElementById("googleSignInButton").textContent = "SIGN IN";
+        document
+          .getElementById("googleSignInButton")
+          .removeEventListener("click", handleGoogleSignOut);
+      }
+    </script>
   </body>
 </html>
