@@ -9,8 +9,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
-
     <script src="firebase-config.js"></script>
+    <script src="./script.js" defer></script>
   </head>
   <body>
     <div class="form-popup form" id="myForm">
@@ -62,9 +62,11 @@
       <p id="book-count">Total book/s count:</p>
     </div>
 
-    <button class="google-btn" id="googleSignInButton">SIGN IN</button>
+    <button class="google-btn" id="googleSignInButton">
+      SIGN IN
+    </button>
 
-    <script src="./script.js" async></script>
+    <!-- <script src="./script.js" async></script> -->
     <script>
       // Create a GoogleAuthProvider instance
       var provider = new firebase.auth.GoogleAuthProvider();
@@ -73,6 +75,8 @@
 
       // Function to handle Google sign-in
       function handleGoogleSignIn() {
+        console.log("clicked"); // Add the missing semicolon here
+
         firebase
           .auth()
           .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
@@ -90,41 +94,69 @@
           });
       }
 
-      function checkUserLoggedIn() {
-        firebase.auth().onAuthStateChanged(function (user) {
-          var signInButton = document.getElementById("googleSignInButton");
+      document
+        .getElementById("googleSignInButton")
+        .addEventListener("click", handleGoogleSignIn);
 
-          if (user) {
-            // User is signed in
-            console.log("User is logged in");
-            signInButton.textContent = "SIGN OUT";
-            signInButton.onclick = handleGoogleSignOut;
+        function checkUserLoggedIn() {
+  firebase.auth().onAuthStateChanged(function (user) {
+    var signInButton = document.getElementById("googleSignInButton");
+    var container = document.getElementById("container");
 
-            // Get the user's display name and show it
-            var displayName = user.displayName;
-            document.getElementById("username-display").textContent =
-              "Username: " + displayName;
+    if (user) {
+      // User is signed in
+      console.log("User is logged in");
+      signInButton.textContent = "SIGN OUT";
+      signInButton.onclick = handleGoogleSignOut;
 
-            // Store the user's sign-in state in local storage
-            localStorage.setItem("userSignedIn", "true");
+      // Get the user's display name and show it
+      var displayName = user.displayName;
+      document.getElementById("username-display").textContent =
+        "Username: " + displayName;
 
-            // You can perform additional actions here for a logged-in user
-          } else {
-            // User is not signed in
-            console.log("User is not logged in");
-            signInButton.textContent = "SIGN IN";
-            signInButton.onclick = handleGoogleSignIn;
+      // Store the user's sign-in state in local storage
+      localStorage.setItem("userSignedIn", "true");
 
-            // Clear the username display
-            document.getElementById("username-display").textContent = "";
+      // Fetch and display the books from Firestore
+      db.collection("books")
+        .get()
+        .then(function (querySnapshot) {
+          // Clear the container
+          container.innerHTML = "";
 
-            // Remove the user's sign-in state from local storage
-            localStorage.removeItem("userSignedIn");
+          // Iterate over the books and display them
+          querySnapshot.forEach(function (doc) {
+            var bookData = doc.data();
+            var book = new Book(
+              bookData.title,
+              bookData.author,
+              bookData.pages,
+              bookData.read
+            );
+            book.id = doc.id;
+            myLibrary.push(book);
+            displayBook(book);
+          });
 
-            // You can perform additional actions here for a non-logged-in user
-          }
+          // Update the book count
+          bookCount.innerHTML = `Total book/s count: ${myLibrary.length}`;
+        })
+        .catch(function (error) {
+          console.log("Error getting books from Firestore:", error);
         });
-      }
+
+    } else {
+      console.log("User is not logged in");
+      signInButton.textContent = "SIGN IN";
+      signInButton.onclick = handleGoogleSignIn;
+      document.getElementById("username-display").textContent = "";
+      localStorage.removeItem("userSignedIn");
+      container.innerHTML = "";
+
+    }
+  });
+}
+
 
       // Check the user's sign-in state on page load
       window.addEventListener("load", function () {

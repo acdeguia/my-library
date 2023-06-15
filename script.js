@@ -117,7 +117,7 @@ function deleteBook(bookId) {
         console.log("Book deleted from Firestore with ID:", bookId);
         const index = myLibrary.findIndex((book) => book.id === bookId);
         myLibrary.splice(index, 1);
-        display();
+        display(); // Update the display after removing the book from myLibrary
       })
       .catch((error) => {
         console.log("Error deleting book from Firestore:", error);
@@ -133,8 +133,6 @@ function clear() {
   pagesInput.value = "";
 }
 
-// Listen for changes in the "books" collection in Firestore
-// Listen for changes in the "books" collection in Firestore
 // Listen for changes in the "books" collection in Firestore
 db.collection("books").onSnapshot((snapshot) => {
   const changes = snapshot.docChanges();
@@ -173,3 +171,5 @@ db.collection("books").onSnapshot((snapshot) => {
 
   display();
 });
+
+
