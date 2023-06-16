@@ -9,12 +9,6 @@ const error = document.querySelector("#error");
 
 let myLibrary = [];
 
-addBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  addBookToLibrary();
-  clear();
-});
-
 class Book {
   constructor(title, author, pages, read) {
     this.title = title;
@@ -25,9 +19,9 @@ class Book {
 }
 
 function addBookToLibrary() {
-  const title = titleInput.value;
-  const author = authorInput.value;
-  const pages = pagesInput.value;
+  const title = titleInput.value.trim();
+  const author = authorInput.value.trim();
+  const pages = pagesInput.value.trim();
   const read = readInput.checked;
 
   if (title === "" || author === "" || pages === "") {
@@ -47,7 +41,7 @@ function addBookToLibrary() {
         console.log("Book added to Firestore with ID:", docRef.id);
         newBook.id = docRef.id;
         myLibrary.push(newBook);
-        // display();
+        clear();
       })
       .catch((error) => {
         console.log("Error adding book to Firestore:", error);
@@ -68,12 +62,11 @@ function display() {
     }
   });
 
-  bookCount.innerHTML = `Total book/s count: ${myLibrary.length}`;
+  // bookCount.innerHTML = `Total book/s count: ${myLibrary.length}`;
 }
 
 // Display a book card in the container
 function displayBook(book) {
-  
   const card = document.createElement("div");
   const cardContainer = document.createElement("div");
   const titleE = document.createElement("h3");
@@ -125,13 +118,51 @@ function deleteBook(bookId) {
   }
 }
 
-
 // Clear the input fields
 function clear() {
   titleInput.value = "";
   authorInput.value = "";
   pagesInput.value = "";
 }
+
+document.getElementById("submit-btn").addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const title = titleInput.value.trim();
+  const author = authorInput.value.trim();
+  const pages = pagesInput.value.trim();
+  const read = readInput.checked;
+
+  if (title === "" || author === "" || pages === "") {
+    error.innerHTML = "Please fill up all fields.";
+    return; // Exit the function if there are empty fields
+  }
+
+  // Clear the error message
+  error.innerHTML = "";
+
+  // Get the currently signed-in user
+  const user = firebase.auth().currentUser;
+
+  // Store the book in Firestore with the user's email
+  db.collection("books")
+    .add({
+      title: title,
+      author: author,
+      pages: pages,
+      read: read,
+      userEmail: user.email, // Add the user's email
+    })
+    .then(function (docRef) {
+      console.log("Book added with ID: ", docRef.id);
+      // Clear the form fields
+      clear();
+    })
+    .catch(function (error) {
+      console.error("Error adding book: ", error);
+    });
+});
+
 
 // Listen for changes in the "books" collection in Firestore
 db.collection("books").onSnapshot((snapshot) => {
@@ -171,5 +202,3 @@ db.collection("books").onSnapshot((snapshot) => {
 
   display();
 });
-
-

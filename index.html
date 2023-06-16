@@ -15,8 +15,10 @@
   <body>
     <div class="form-popup form" id="myForm">
       <form class="main-form" action="#" method="get">
-        <h2>MY LIBRARY</h2>
-        <div id="username-display"></div>
+        <div>
+          <h2>MY LIBRARY</h2>
+          <div id="username-display"></div>
+        </div>
         <div class="input-container">
           <label for="title">Book Title</label>
           <input type="text" name="title" placeholder=" " id="title" required />
@@ -50,6 +52,7 @@
           <label for="read">I have already read the book</label>
           <span id="read-error"></span>
         </div>
+        <p id="error"></p>
 
         <button type="submit" class="btn" id="submit-btn">+ ADD BOOK</button>
       </form>
@@ -57,14 +60,8 @@
 
     <div class="container" id="container"></div>
 
-    <div class="log">
-      <h2>Library log</h2>
-      <p id="book-count">Total book/s count:</p>
-    </div>
 
-    <button class="google-btn" id="googleSignInButton">
-      SIGN IN
-    </button>
+    <button class="google-btn" id="googleSignInButton">SIGN IN</button>
 
     <!-- <script src="./script.js" async></script> -->
     <script>
@@ -98,65 +95,59 @@
         .getElementById("googleSignInButton")
         .addEventListener("click", handleGoogleSignIn);
 
-        function checkUserLoggedIn() {
-  firebase.auth().onAuthStateChanged(function (user) {
-    var signInButton = document.getElementById("googleSignInButton");
-    var container = document.getElementById("container");
+      function checkUserLoggedIn() {
+        firebase.auth().onAuthStateChanged(function (user) {
+          var signInButton = document.getElementById("googleSignInButton");
+          var container = document.getElementById("container");
 
-    if (user) {
-      // User is signed in
-      console.log("User is logged in");
-      signInButton.textContent = "SIGN OUT";
-      signInButton.onclick = handleGoogleSignOut;
+          if (user) {
+            // User is signed in
+            console.log("User is logged in");
+            signInButton.textContent = "SIGN OUT";
+            signInButton.onclick = handleGoogleSignOut;
 
-      // Get the user's display name and show it
-      var displayName = user.displayName;
-      document.getElementById("username-display").textContent =
-        "Username: " + displayName;
+            // Get the user's display name and show it
+            var displayName = user.displayName;
+            document.getElementById("username-display").textContent =
+              displayName;
 
-      // Store the user's sign-in state in local storage
-      localStorage.setItem("userSignedIn", "true");
+            // Store the user's sign-in state in local storage
+            localStorage.setItem("userSignedIn", "true");
 
-      // Fetch and display the books from Firestore
-      db.collection("books")
-        .get()
-        .then(function (querySnapshot) {
-          // Clear the container
-          container.innerHTML = "";
+            // Fetch and display the books from Firestore
+            db.collection("books")
+              .get()
+              .then(function (querySnapshot) {
+                // Clear the container
+                container.innerHTML = "";
 
-          // Iterate over the books and display them
-          querySnapshot.forEach(function (doc) {
-            var bookData = doc.data();
-            var book = new Book(
-              bookData.title,
-              bookData.author,
-              bookData.pages,
-              bookData.read
-            );
-            book.id = doc.id;
-            myLibrary.push(book);
-            displayBook(book);
-          });
-
-          // Update the book count
-          bookCount.innerHTML = `Total book/s count: ${myLibrary.length}`;
-        })
-        .catch(function (error) {
-          console.log("Error getting books from Firestore:", error);
+                // Iterate over the books and display them
+                querySnapshot.forEach(function (doc) {
+                  var bookData = doc.data();
+                  var book = new Book(
+                    bookData.title,
+                    bookData.author,
+                    bookData.pages,
+                    bookData.read
+                  );
+                  book.id = doc.id;
+                  myLibrary.push(book);
+                  displayBook(book);
+                });
+              })
+              .catch(function (error) {
+                console.log("Error getting books from Firestore:", error);
+              });
+          } else {
+            console.log("User is not logged in");
+            signInButton.textContent = "SIGN IN";
+            signInButton.onclick = handleGoogleSignIn;
+            document.getElementById("username-display").textContent = "";
+            localStorage.removeItem("userSignedIn");
+            container.innerHTML = "";
+          }
         });
-
-    } else {
-      console.log("User is not logged in");
-      signInButton.textContent = "SIGN IN";
-      signInButton.onclick = handleGoogleSignIn;
-      document.getElementById("username-display").textContent = "";
-      localStorage.removeItem("userSignedIn");
-      container.innerHTML = "";
-
-    }
-  });
-}
-
+      }
 
       // Check the user's sign-in state on page load
       window.addEventListener("load", function () {
