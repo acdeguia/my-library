@@ -57,14 +57,15 @@ function display() {
   const bookIds = new Set(); // Keep track of book IDs
 
   myLibrary.forEach((book) => {
-    if (!bookIds.has(book.id)) {
-      displayBook(book);
-      bookIds.add(book.id);
+    if (book.userEmail) {
+      if (!bookIds.has(book.id)) {
+        displayBook(book);
+        bookIds.add(book.id);
+      }
     }
   });
-
-  // bookCount.innerHTML = `Total book/s count: ${myLibrary.length}`;
 }
+
 
 // Display a book card in the container
 function displayBook(book) {
